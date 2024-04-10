@@ -1,6 +1,8 @@
-public class CustomRunnable  implements Runnable{
+public class CustomRunnable implements Runnable {
     @Override
     public void run() {
-        System.out.println("Code created in external CustomRunnable class implementing Runnable interface.");
+        for (int i = 0; i < 100; i++) {
+            System.out.println("CustomRunnable loop: " + i);
+        }
     }
 }
