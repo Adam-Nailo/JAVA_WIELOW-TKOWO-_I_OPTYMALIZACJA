@@ -1,20 +1,9 @@
 public class Main {
     public static void main(String[] args) {
+        Thread thread = new Thread(new LoopedComputationRunnable());
+        thread.start();
 
-        Thread thread1 = new Thread(new CustomRunnable());
-        thread1.start();
-
-        Thread thread2 = new CustomThread();
-        thread2.start();
-
-        try {
-            thread1.join();
-            thread2.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println("Job is done.");
+        thread.interrupt();
     }
 
 //        Thread thread = new Thread(() -> secondThread());
