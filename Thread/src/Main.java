@@ -1,9 +1,14 @@
 public class Main {
     public static void main(String[] args) {
         Thread thread = new Thread(new LoopedComputationRunnable());
+        thread.setDaemon(true);
         thread.start();
 
-        thread.interrupt();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //        Thread thread = new Thread(() -> secondThread());
