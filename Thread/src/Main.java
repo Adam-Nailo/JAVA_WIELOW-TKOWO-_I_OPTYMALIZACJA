@@ -1,33 +1,16 @@
+import incrementingvolatileproblem.IncrementingRunnable;
+import incrementingvolatileproblem.ReadingRunnable;
+import incrementingvolatileproblem.SharedCounter;
+
 public class Main {
     public static void main(String[] args) {
-        Thread thread = new Thread(new LoopedComputationRunnable());
-        thread.setDaemon(true);
-        thread.start();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        SharedCounter counter = new SharedCounter();
+        Thread counterThread = new Thread(new IncrementingRunnable(counter));
+        Thread readingThread = new Thread(new ReadingRunnable(counter));
+        counterThread.start();
+        readingThread.start();
     }
 
-//        Thread thread = new Thread(() -> secondThread());
-//        thread.setName("Second loop thread");
-//        thread.setPriority(Thread.MAX_PRIORITY);
-//        System.out.println("Second thread priority: " + thread.getPriority());
-//        thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//            @Override
-//            public void uncaughtException(Thread t, Throwable e) {
-//                System.out.println("Thread: " + t.getName() + ", unhandled exception thrown: " + e.getMessage());
-//            }
-//        });
-//        thread.start();
-//        mainThread();
-//        Thread thread1 = new Thread(() -> System.out.println("Starting another thread: " + Thread.currentThread().getName()));
-//        System.out.println("Main thread priority: " + Thread.currentThread().getPriority());
-//        thread1.setName("No loop thread");
-//        thread1.start();
-//    }
 
     private static void mainThread() {
         System.out.println("Starting loop in thread: " + Thread.currentThread().getName());
