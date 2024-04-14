@@ -1,14 +1,27 @@
 import incrementingvolatileproblem.IncrementingRunnable;
 import incrementingvolatileproblem.ReadingRunnable;
 import incrementingvolatileproblem.SharedCounter;
+import synchronizedproblem.SynchronizedCounter;
+import synchronizedproblem.SynchronizedRunnable;
 
 public class Main {
     public static void main(String[] args) {
-        SharedCounter counter = new SharedCounter();
-        Thread counterThread = new Thread(new IncrementingRunnable(counter));
-        Thread readingThread = new Thread(new ReadingRunnable(counter));
-        counterThread.start();
-        readingThread.start();
+        SynchronizedCounter counter = new SynchronizedCounter();
+
+        Thread thread1 = new Thread(new SynchronizedRunnable(counter));
+        Thread thread2 = new Thread(new SynchronizedRunnable(counter));
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Result of counter incrementation: " + counter.getCounter());
+
     }
 
 
