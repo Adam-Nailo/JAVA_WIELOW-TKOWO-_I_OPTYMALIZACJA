@@ -1,6 +1,7 @@
 import incrementingvolatileproblem.IncrementingRunnable;
 import incrementingvolatileproblem.ReadingRunnable;
 import incrementingvolatileproblem.SharedCounter;
+import locksexample.LockExample;
 import synchronizedproblem.SynchronizedCounter;
 import synchronizedproblem.SynchronizedRunnable;
 import waitandnotify.WaitAndNotifyExample;
@@ -8,26 +9,22 @@ import waitandnotify.WaitAndNotifyExample;
 public class Main {
     public static void main(String[] args) {
 
-        WaitAndNotifyExample example = new WaitAndNotifyExample();
+        LockExample lockExample = new LockExample();
 
+        Thread thread1 = new Thread(()->lockExample.incrementCounter());
+        Thread thread2 = new Thread(()->lockExample.incrementCounter());
 
-        Thread thread = new Thread(() -> {
-            try {
-                example.waitMethod();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        thread.start();
+        thread1.start();
+        thread2.start();
 
-        Thread notifyThread = new Thread(()->{
-            try {
-                example.notifyMethod();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        notifyThread.start();
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Counter result: " + lockExample.getCounter());
     }
 
 
