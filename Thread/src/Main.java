@@ -3,25 +3,31 @@ import incrementingvolatileproblem.ReadingRunnable;
 import incrementingvolatileproblem.SharedCounter;
 import synchronizedproblem.SynchronizedCounter;
 import synchronizedproblem.SynchronizedRunnable;
+import waitandnotify.WaitAndNotifyExample;
 
 public class Main {
     public static void main(String[] args) {
-        SynchronizedCounter counter = new SynchronizedCounter();
 
-        Thread thread1 = new Thread(new SynchronizedRunnable(counter));
-        Thread thread2 = new Thread(new SynchronizedRunnable(counter));
+        WaitAndNotifyExample example = new WaitAndNotifyExample();
 
-        thread1.start();
-        thread2.start();
 
-        try {
-            thread1.join();
-            thread2.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Result of counter incrementation: " + counter.getCounter());
+        Thread thread = new Thread(() -> {
+            try {
+                example.waitMethod();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
 
+        Thread notifyThread = new Thread(()->{
+            try {
+                example.notifyMethod();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        notifyThread.start();
     }
 
 
