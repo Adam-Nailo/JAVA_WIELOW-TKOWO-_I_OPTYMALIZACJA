@@ -1,3 +1,4 @@
+import executorservice.ExecutorServiceTask;
 import incrementingvolatileproblem.IncrementingRunnable;
 import incrementingvolatileproblem.ReadingRunnable;
 import incrementingvolatileproblem.SharedCounter;
@@ -6,25 +7,17 @@ import synchronizedproblem.SynchronizedCounter;
 import synchronizedproblem.SynchronizedRunnable;
 import waitandnotify.WaitAndNotifyExample;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Main {
     public static void main(String[] args) {
 
-        LockExample lockExample = new LockExample();
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
-        Thread thread1 = new Thread(()->lockExample.incrementCounter());
-        Thread thread2 = new Thread(()->lockExample.incrementCounter());
-
-        thread1.start();
-        thread2.start();
-
-        try {
-            thread1.join();
-            thread2.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        for (int i = 0; i < 10; i++) {
+            executorService.submit(new ExecutorServiceTask());
         }
-
-        System.out.println("Counter result: " + lockExample.getCounter());
     }
 
 
