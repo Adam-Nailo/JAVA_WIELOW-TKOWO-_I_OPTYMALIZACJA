@@ -3,6 +3,7 @@ import incrementingvolatileproblem.IncrementingRunnable;
 import incrementingvolatileproblem.ReadingRunnable;
 import incrementingvolatileproblem.SharedCounter;
 import locksexample.LockExample;
+import semaphore.Dungeon;
 import synchronizedproblem.SynchronizedCounter;
 import synchronizedproblem.SynchronizedRunnable;
 import waitandnotify.WaitAndNotifyExample;
@@ -13,11 +14,14 @@ import java.util.concurrent.Executors;
 public class Main {
     public static void main(String[] args) {
 
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        Dungeon dungeon = new Dungeon(3);
 
-        for (int i = 0; i < 10; i++) {
-            executorService.submit(new ExecutorServiceTask());
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
+        for (int i = 0; i < 4; i++) {
+            executorService.submit(() -> dungeon.tryToEnter());
         }
+
     }
 
 
