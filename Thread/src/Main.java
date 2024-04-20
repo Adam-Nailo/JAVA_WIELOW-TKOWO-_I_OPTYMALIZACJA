@@ -1,4 +1,7 @@
 import callable.Divider;
+import countdownlatch.HuntRunnable;
+import countdownlatch.SellRunnable;
+import countdownlatch.SleepRunnable;
 import executorservice.ExecutorServiceTask;
 import incrementingvolatileproblem.IncrementingRunnable;
 import incrementingvolatileproblem.ReadingRunnable;
@@ -11,48 +14,30 @@ import waitandnotify.WaitAndNotifyExample;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class Main {
     public static void main(String[] args) {
 
-       ExecutorService service = Executors.newFixedThreadPool(5);
+        CountDownLatch countDownLatch = new CountDownLatch(3);
 
-        List<Future<Double>> list = new ArrayList<>();
+        List<Runnable> tasks = new ArrayList<>();
+        tasks.add(new SleepRunnable(countDownLatch));
+        tasks.add(new HuntRunnable(countDownLatch));
+        tasks.add(new SellRunnable(countDownLatch));
 
-       for (int i =0;i<5;i++){
-           Future<Double> result = service.submit(new Divider((double) (i * 5)));
-           list.add(result);
-       }
+        ExecutorService service = Executors.newFixedThreadPool(3);
 
-       for(Future<Double> result: list){
-           try {
-               System.out.println(result.get());
-           } catch (InterruptedException e) {
-               throw new RuntimeException(e);
-           } catch (ExecutionException e) {
-               throw new RuntimeException(e);
-           }
-       }
-
-    }
-
-
-    private static void mainThread() {
-        System.out.println("Starting loop in thread: " + Thread.currentThread().getName());
-        for (int i = 0; i < 100; i++) {
-            System.out.println("main thread loop: " + i);
+        for(Runnable task: tasks){
+            service.execute(task);
         }
-    }
 
-    private static void secondThread() {
-        System.out.println("Starting loop in thread: " + Thread.currentThread().getName());
-        throw new RuntimeException("Some exception");
-//        for (int i = 0; i < 100; i++) {
-//            System.out.println("second thread loop: " + i);
-//        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Team is ready for mission");
     }
 }
