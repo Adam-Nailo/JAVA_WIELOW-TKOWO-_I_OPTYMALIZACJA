@@ -26,7 +26,7 @@ public class CustomerRunnable implements Runnable{
                 String pickedOrder =  orders.get(random.nextInt(orders.size()));
                 System.out.println("Customer asks for: " + pickedOrder);
                 orderQue.put(pickedOrder);
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
