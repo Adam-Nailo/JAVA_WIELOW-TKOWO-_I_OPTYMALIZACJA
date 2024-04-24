@@ -19,7 +19,13 @@ public class DelayedMission implements Delayed {
     }
 
     @Override
-    public int compareTo(Delayed o) {
+    public int compareTo(Delayed otherMission) {
+        if(this.duration < ((DelayedMission)otherMission).getDuration()){
+            return -1;
+        }
+        if(this.duration > ((DelayedMission)otherMission).getDuration()){
+            return 1;
+        }
         return 0;
     }
 
