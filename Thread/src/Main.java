@@ -1,5 +1,7 @@
 import blockingque.CustomerRunnable;
 import blockingque.RestaurantRunnable;
+import concurrenthashmap.AddingItemsRunnable;
+import concurrenthashmap.GettingItemsRunnable;
 import cyclicbarrier.CyclicBarrierRunnable;
 import delayqueue.DelayedMission;
 import priorityblockingqueue.Case;
@@ -10,12 +12,11 @@ import java.util.concurrent.*;
 
 public class Main {
     public static void main(String[] args) {
-        ExecutorService service = Executors.newFixedThreadPool(3);
+        ExecutorService service = Executors.newFixedThreadPool(2);
 
-        CyclicBarrier barrier = new CyclicBarrier(3, ()-> System.out.println("Knight is ready"));
+        ConcurrentMap<Integer,String> map = new ConcurrentHashMap<>();
 
-        service.execute(new CyclicBarrierRunnable("preparing armor","bringing armor",5000,barrier));
-        service.execute(new CyclicBarrierRunnable("preparing horse","bringing horse",7000,barrier));
-        service.execute(new CyclicBarrierRunnable("preparing sword","bringing sword",9000,barrier));
+        service.execute(new AddingItemsRunnable(map));
+        service.execute(new GettingItemsRunnable(map));
     }
 }
