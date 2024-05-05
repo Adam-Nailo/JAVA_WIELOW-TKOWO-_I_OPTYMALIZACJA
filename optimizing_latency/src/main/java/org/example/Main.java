@@ -4,11 +4,11 @@ public class Main {
     private static PathManager pathManager = new PathManager();
 
     public static void main(String[] args) {
+        String line = "Barnaby,Valance,bvalance0@intel.com,Male";
 
-        String fileName = "data1.txt";
+        CalculatedPersonalDataDto dto = new CalculatedPersonalDataDto();
+        dto.calculateLine(line);
 
-        String absolutePath = pathManager.createAbsoluteResourceFilePath(fileName);
-
-        System.out.println(absolutePath);
+        System.out.println(dto);
     }
 }

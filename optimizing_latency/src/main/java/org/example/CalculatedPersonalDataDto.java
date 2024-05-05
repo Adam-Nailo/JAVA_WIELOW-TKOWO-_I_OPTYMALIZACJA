@@ -14,6 +14,20 @@ public class CalculatedPersonalDataDto {
         this.setAmountOfLongNames(this.getAmountOfLongNames() + calculatedPersonalDataDto.getAmountOfLongNames());
     }
 
+    public void calculateLine(String line){
+        String[] split = line.split(",");
+        if(split[0].length()<=6){
+            this.amountOfShortNames++;
+        } else {
+            this.amountOfLongNames++;
+        }
+        if("Female".equals(split[3])){
+            this.amountOfFemales++;
+        } else {
+            this.amountOfMales++;
+        }
+    }
+
     public long getAmountOfFemales() {
         return amountOfFemales;
     }
@@ -44,5 +58,15 @@ public class CalculatedPersonalDataDto {
 
     public void setAmountOfLongNames(long amountOfLongNames) {
         this.amountOfLongNames = amountOfLongNames;
+    }
+
+    @Override
+    public String toString() {
+        return "CalculatedPersonalDataDto{" +
+                "amountOfFemales=" + amountOfFemales +
+                ", amountOfMales=" + amountOfMales +
+                ", amountOfShortNames=" + amountOfShortNames +
+                ", amountOfLongNames=" + amountOfLongNames +
+                '}';
     }
 }
