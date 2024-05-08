@@ -7,12 +7,13 @@ import java.io.IOException;
 
 public class PersonalDataService {
 
-    public CalculatedPersonalDataDto getCalculatedPersonalData(String filepath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+    public CalculatedPersonalDataDto getCalculatedPersonalData(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             return readAndCalculateLines(reader);
-        } catch (FileNotFoundException e) {
+        }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
