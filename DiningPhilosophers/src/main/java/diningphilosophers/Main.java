@@ -7,9 +7,7 @@ public class Main {
     private static final int SIMULATION_TIME = 6000;
     public static void main(String[] args) {
 
-        ExecutorService service = new ExecutorService(){
-
-        }
+        new Executors(NUMBER_OF_PHILOSOPHERS);
 
     }
 }
