@@ -8,6 +8,6 @@ public class Main {
     public static void main(String[] args) {
 
         new Executors(NUMBER_OF_PHILOSOPHERS);
-
+List<Philosopher> philosophers = new ArrayList<>();
     }
 }
